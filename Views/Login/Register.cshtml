@@ -1,0 +1,60 @@
+﻿@model proj0.Models.UserModel
+<section class="login account footer-padding">
+    <div class="container">
+        <div class="login-section account-section">
+            <div class="review-form">
+                <h5 class="comment-title">Create Account</h5>
+                <form asp-action="Registerr" method="post">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="UserName">First Name*</label>
+                                <input type="text" class="form-control" id="UserName" name="UserName" placeholder="Enter your first name" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Email">Email*</label>
+                                <input type="email" class="form-control" id="Email" name="Email" placeholder="Enter your email" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Password">Password*</label>
+                                <input type="password" class="form-control" id="Password" name="Password" placeholder="Enter your password" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="address">Address*</label>
+                                <input type="text" class="form-control" id="address" name="address" placeholder="Enter your address" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Pincode">Postcode / ZIP*</label>
+                                <input type="text" class="form-control" id="Pincode" name="Pincode" placeholder="Enter your postcode/ZIP" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+                                <label class="form-check-label" for="agreeTerms">I agree to all terms and conditions in ShopUs.</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary">Create an Account</button>
+                            <span class="shop-account">Already have an account? <a href="login.html">Log In</a></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

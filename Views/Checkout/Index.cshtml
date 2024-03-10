@@ -1,0 +1,55 @@
+﻿@using proj0.BAL
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    var cart = HttpContextAccessor.HttpContext.Session.Get<Cart>("Cart") ?? new Cart();
+    decimal total = 0;
+}
+
+<section class="checkout product footer-padding">
+    <div class="container">
+        <div class="checkout-section">
+            <div class="row gy-5">
+                <div class="col-lg-6">
+                    <div class="checkout-wrapper">
+                        <div class="account-section billing-section">
+                            <h5 class="wrapper-heading">Order Summary</h5>
+                            <div class="order-summery">
+                                <div class="subtotal product-total">
+                                    <h5 class="wrapper-heading">PRODUCT</h5>
+                                    <h5 class="wrapper-heading">TOTAL</h5>
+                                </div>
+                                <hr>
+                                <div class="subtotal product-total">
+                                    <ul class="product-list">
+                                        @foreach (var item in cart.Items)
+                                        {
+                                            <li>
+                                                <div class="product-info">
+                                                    <h5 class="wrapper-heading">@item.Name</h5>
+                                                    <p class="paragraph">@item.Description</p>
+                                                </div>
+                                                <div class="price">
+                                                    <h5 class="wrapper-heading">$@item.Price</h5>
+                                                </div>
+                                            </li>
+                                            total += item.Price;
+                                        }
+                                    </ul>
+                                </div>
+                                <hr>
+                                <div class="subtotal product-total">
+                                    <h5 class="wrapper-heading">SUBTOTAL</h5>
+                                    <h5 class="wrapper-heading">$@total</h5>
+                                </div>
+                                <div class="subtotal payment-type">
+                                    <!-- Your payment options here -->
+                                </div>
+                                <a href="#" class="shop-btn">Place Order Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

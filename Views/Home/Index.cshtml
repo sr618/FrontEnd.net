@@ -1,0 +1,67 @@
+﻿@model proj0.Models.Multi
+
+<section class="product-category">
+    <div class="container">
+        <div class="section-title">
+            <h5>Our Categories</h5>
+            <a href="product-sidebar.html" class="view">View All</a>
+        </div>
+        <div class="category-section">
+            @foreach (var row in Model.Categories){
+            <div class="product-wrapper" >
+                <div class="wrapper-img">
+                    <img src="@row.Image.ToString()">
+                </div>
+                <div class="wrapper-info">
+                    <a href="product-sidebar.html" class="wrapper-details">@row.Name</a>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</section>
+<section class="product arrival">
+    <div class="container">
+        <div class="section-title">
+            <h5>NEW ARRIVALS</h5>
+            <a href="product-sidebar.html" class="view">View All</a>
+        </div>
+
+        <div class="arrival-section">
+            <div class="row g-5">
+                @foreach (var row in Model.Items)
+                {
+                    <div class="col-lg-3 col-sm-6">
+                        <a href="@Url.Action("Index","Product",new {id = row.ItemID})" class="product-link">
+
+                        <div class="product-wrapper aos-init aos-animate" data-aos="fade-up">
+                            <div class="product-img">
+                                <img src="@row.Photos" alt="product-img">
+                                <div class="product-cart-items">
+                                   
+                                    </div>
+                                </div>
+                                <div class="product-info">
+                                <div class="ratings">
+                            
+                                </div>
+                                <div class="product-description">
+                                  
+                                        @row.Title
+
+                                    <div class="price">
+                                           <span class="price-cut">$12.99</span>
+                                        <span class="new-price">@row.FinalPrice</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-cart-btn">
+                            </div>
+                        </div>
+</a>
+                    </div>
+
+                }
+
+</section>
+

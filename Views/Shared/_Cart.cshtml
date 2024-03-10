@@ -1,0 +1,55 @@
+﻿@using Microsoft.AspNetCore.Http
+@using proj0.BAL
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    var cart = HttpContextAccessor.HttpContext.Session.Get<Cart>("Cart") ?? new Cart();
+  
+}
+
+<div class="cart-wrapper-item">
+    @if (cart.Items != null && cart.Items.Any())
+    {
+        foreach (var item in cart.Items)
+        {
+            <div class="wrapper">
+                <div class="wrapper-item">
+                    <div class="wrapper-img">
+                        <img src="@item.Image" alt="@item.Name">
+                    </div>
+                    <div class="wrapper-content">
+                        <h5 class="wrapper-title">@item.Name</h5>
+                        <p>@item.Description</p>
+                        <div class="price">
+                            <p class="new-price">$@item.Price.ToString("0.00")</p>
+                            <p>Quantity: @item.Quantity</p>
+                        </div>
+                    </div>
+                </div>
+                <span class="close-btn">
+                    <!-- Remove button -->
+                    <button class="remove-from-cart" data-id="@item.ItemID">Remove</button>
+                </span>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="empty-cart-message">
+            <p>Cart is empty</p>
+        </div>
+    }
+</div>
+
+<div class="cart-submenu">
+    <div class="cart-wrapper-section">
+        <div class="wrapper-line"></div>
+        <div class="wrapper-subtotal">
+            <h5 class="wrapper-title">Subtotal</h5>
+            <h5 class="wrapper-title">total</h5>
+        </div>
+        <div class="cart-btn">
+            <a href="cart.html" class="shop-btn view-btn">View Cart</a>
+            <a href="checkout.html" class="shop-btn checkout-btn">Checkout Now</a>
+        </div>
+    </div>
+</div>
