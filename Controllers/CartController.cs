@@ -40,4 +40,13 @@ public class CartController : Controller
             Price = 10.99m
         };
     }
+    public IActionResult Index()
+    {
+       
+        return View();
+    }
+    public IActionResult _Cart()
+    {
+        return PartialView();
+    }
 }

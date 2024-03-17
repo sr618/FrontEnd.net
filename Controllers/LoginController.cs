@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using proj0.DAL;
 using proj0.Models;
 
@@ -6,58 +7,86 @@ namespace proj0.Controllers
 {
     public class LoginController : Controller
     {
-        int UserID;
+        private readonly Dal_User _dal;
+
+        public LoginController(Dal_User dal)
+        {
+            _dal = dal;
+        }
+
         public IActionResult Index()
         {
             return View();
         }
-       public IActionResult Indexx(LoginModel mdl)
+
+        [HttpPost]
+        public IActionResult Indexx(LoginModel mdl)
         {
-            Dal_User dal
-                = new Dal_User();
-            UserModel users = dal.GetAllUsers().Find(x => x.UserName == mdl.UserName && x.Password == mdl.Password);
-            if (users == null)
+            UserModel user = _dal.GetUserByCredentials(mdl.UserName, mdl.Password);
+            if (user == null)
             {
+                ViewBag.SweetAlertMessage = "Invalid Username or Password";
+                ViewBag.SweetAlertType = "error";
+                TempData["SweetAlertMessage"] = "Invalid Username or Password";
+                TempData["SweetAlertType"] = "error";
                 return RedirectToAction("Index");
+            
             }
             else
             {
-                UserID = users.UserID;
-                //set sessions for user 
-                HttpContext.Session.SetString("UserID", users.UserID.ToString());
-                HttpContext.Session.SetString("UserName", users.UserName);
-                HttpContext.Session.SetString("IsAdmin", users.IsAdmin.ToString());
-                HttpContext.Session.SetString("IsActive", users.IsActive.ToString());
-                //HttpContext.Session.SetString("Email", users.Email);
-                HttpContext.Session.SetString("Image", users.Image);
-                HttpContext.Session.SetString("address", users.address);
-                HttpContext.Session.SetString("Password", users.Password);
-                HttpContext.Session.SetString("Created", users.Created);
-                HttpContext.Session.SetString("Modified", users.Modified);
-                HttpContext.Session.SetString("Postcode", users.Pincode.ToString());
+                // Log in user and redirect to home page
+                HttpContext.Session.SetString("UserID", user.UserID.ToString());
+                HttpContext.Session.SetString("UserName", user.UserName);
+                HttpContext.Session.SetString("IsAdmin", user.IsAdmin.ToString());
+                HttpContext.Session.SetString("IsActive", user.IsActive.ToString());
+                HttpContext.Session.SetString("Image", user.Image);
+                HttpContext.Session.SetString("address", user.address);
+                HttpContext.Session.SetString("Password", user.Password);
+                HttpContext.Session.SetString("Created", user.Created);
+                HttpContext.Session.SetString("Modified", user.Modified);
+                HttpContext.Session.SetString("Postcode", user.Pincode.ToString());
 
                 return RedirectToAction("Index", "Home");
             }
         }
+
+
         public IActionResult Register()
         {
-          
-                return View();
-            
+            return View();
         }
-     
+
+      
         public IActionResult Registerr(UserModel mdl)
         {
-            if (mdl.UserName != null && mdl.Password!=null)
+            if (ModelState.IsValid)
             {
-                Dal_User dal = new Dal_User();
-                dal.AddUser(mdl);
-                return RedirectToAction("Index");
+                int result = _dal.AddUser(mdl);
+                if (result > 0)
+                {
+                    // Registration successful
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    // Registration failed, display error message
+                    ViewBag.SweetAlertMessage = "Failed to register user. Please try again later.";
+                    ViewBag.SweetAlertType = "error";
+                    TempData["SweetAlertMessage"] = "Failed to register user. Please try again later.";
+                    TempData["SweetAlertType"] = "error";
+                    return RedirectToAction("Register");
+                }
             }
             else
             {
-                return View();
+                // Model validation failed, display validation error messages
+                ViewBag.SweetAlertMessage = "Please fix the following errors:";
+                ViewBag.SweetAlertType = "error";
+                TempData["SweetAlertMessage"] = "Please fix the following errors:";
+                TempData["SweetAlertType"] = "error";
+                return RedirectToAction("Register");
             }
         }
+
     }
 }

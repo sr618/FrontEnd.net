@@ -17,7 +17,7 @@
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\" />
     <Folder Include="DAL\NewFolder\" />
-    <Folder Include="Views\Cart\" />
+    <Folder Include="Views\Shared\NewFolder\" />
     <Folder Include="wwwroot\assets\images\homepage-one\blog-img\" />
   </ItemGroup>
 

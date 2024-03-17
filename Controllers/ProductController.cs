@@ -20,5 +20,27 @@ namespace proj0.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
+       
+        public IActionResult ProductsByCategory(int? categoryId)
+        {
+            int? id = (int)categoryId;
+            if (id > 0 && id.HasValue)
+            {
+                DAL.DAL_Items dl = new DAL.DAL_Items();
+                var x = dl.GetItems();
+                var itm = x.FindAll(i => i.CategoryID == id);
+                return View(itm);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+        public IActionResult Allitems()
+        {
+            DAL.DAL_Items dl = new DAL.DAL_Items();
+            var x = dl.GetItems();
+            return View(x);
+        }
     }
 }

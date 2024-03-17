@@ -30,7 +30,7 @@
                     <button type="submit" class="shop-btn">Log In</button>
                     </form>
                     <span class="shop-account">
-                        Dont't have an account ?<a href="create-account.html">
+                        Dont't have an account ?<a href=@Url.Action("Register","Login")>
                             Sign Up
                             Free
                         </a>
@@ -41,3 +41,74 @@
     </div>
 </section>
 <!--------------- login-section-end --------------->
+@section scripts {
+    <!-- Add SweetAlert script -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Display SweetAlert message if present in TempData
+            var sweetAlertMessage = '@TempData["SweetAlertMessage"]';
+            var sweetAlertType = '@TempData["SweetAlertType"]';
+
+            if (sweetAlertMessage) {
+                Swal.fire({
+                    icon: sweetAlertType,
+                    title: 'Alert',
+                    html: sweetAlertMessage
+                });
+
+                // Clear TempData after displaying the message
+                '@TempData.Remove("SweetAlertMessage")';
+                '@TempData.Remove("SweetAlertType")';
+            }
+
+            var formAuthentication = document.getElementById('loginForm');
+
+            if (formAuthentication) {
+                formAuthentication.addEventListener('submit', function (event) {
+                    // Validate form on submit
+                    var isValid = validateForm();
+
+                    if (!isValid) {
+                        event.preventDefault();
+                    }
+                });
+            }
+
+            function validateForm() {
+                var userName = document.getElementById('email').value.trim();
+                var password = document.getElementById('password').value.trim();
+
+                if (userName === '' || password === '') {
+                    // Display SweetAlert for empty field validation errors
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        text: 'Please enter both username/email and password.'
+                    });
+                    return false;
+                }
+
+                // Your server-side validation logic should handle incorrect values
+                // For now, assuming you need to check if values are not equal to a specific incorrect value
+                var incorrectValue = 'incorrect'; // Replace this with the actual incorrect value
+
+                if (userName === incorrectValue || password === incorrectValue) {
+                    // Display SweetAlert for incorrect values
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        text: 'Invalid Username or Password'
+                    });
+                    return false;
+                }
+
+                return true;
+            }
+        });
+    </script>
+}
+
+}
+

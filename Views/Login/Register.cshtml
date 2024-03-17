@@ -1,4 +1,5 @@
 ﻿@model proj0.Models.UserModel
+
 <section class="login account footer-padding">
     <div class="container">
         <div class="login-section account-section">
@@ -8,36 +9,36 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="UserName">First Name*</label>
-                                <input type="text" class="form-control" id="UserName" name="UserName" placeholder="Enter your first name" required>
+                                <label asp-for="UserName">First Name*</label>
+                                <input type="text" class="form-control" id="UserName" name="UserName" placeholder="Enter your first name" required asp-for="UserName">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="Email">Email*</label>
-                                <input type="email" class="form-control" id="Email" name="Email" placeholder="Enter your email" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="Password">Password*</label>
-                                <input type="password" class="form-control" id="Password" name="Password" placeholder="Enter your password" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="address">Address*</label>
-                                <input type="text" class="form-control" id="address" name="address" placeholder="Enter your address" required>
+                                <label asp-for="Email">Email*</label>
+                                <input type="email" class="form-control" id="Email" name="Email" placeholder="Enter your email" required asp-for="Email">
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="Pincode">Postcode / ZIP*</label>
-                                <input type="text" class="form-control" id="Pincode" name="Pincode" placeholder="Enter your postcode/ZIP" required>
+                                <label asp-for="Password">Password*</label>
+                                <input type="password" class="form-control" id="Password" name="Password" placeholder="Enter your password" required asp-for="Password">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="address">Address*</label>
+                                <input type="text" class="form-control" id="address" name="address" placeholder="Enter your address" required asp-for="address">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Pincode">Postcode / ZIP*</label>
+                                <input type="text" class="form-control" id="Pincode" name="Pincode" placeholder="Enter your postcode/ZIP" required asp-for="Pincode">
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -50,7 +51,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <button type="submit" class="btn btn-primary">Create an Account</button>
-                            <span class="shop-account">Already have an account? <a href="login.html">Log In</a></span>
+                            <span class="shop-account">Already have an account? ?<a href=@Url.Action("Index","Login")>Log In</a></span>
                         </div>
                     </div>
                 </form>
@@ -58,3 +59,58 @@
         </div>
     </div>
 </section>
+
+@section scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Display SweetAlert message if present in TempData
+            var sweetAlertMessage = '@TempData["SweetAlertMessage"]';
+            var sweetAlertType = '@TempData["SweetAlertType"]';
+
+            if (sweetAlertMessage) {
+                Swal.fire({
+                    icon: sweetAlertType,
+                    title: 'Alert',
+                    html: sweetAlertMessage
+                });
+
+                // Clear TempData after displaying the message
+                '@TempData.Remove("SweetAlertMessage")';
+                '@TempData.Remove("SweetAlertType")';
+            }
+
+            var formRegistration = document.getElementById('formRegistration');
+
+            if (formRegistration) {
+                formRegistration.addEventListener('submit', function (event) {
+                    // Validate form on submit
+                    var isValid = validateForm();
+
+                    if (!isValid) {
+                        event.preventDefault();
+                    }
+                });
+            }
+
+            function validateForm() {
+                var userName = document.getElementById('UserName').value.trim();
+                var email = document.getElementById('Email').value.trim();
+                var password = document.getElementById('Password').value.trim();
+                var address = document.getElementById('address').value.trim();
+                var pincode = document.getElementById('Pincode').value.trim();
+
+                if (userName === '' || email === '' || password === '' || address === '' || pincode === '') {
+                    // Display SweetAlert for empty field validation errors
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        text: 'Please fill in all fields.'
+                    });
+                    return false;
+                }
+
+                return true;
+            }
+        });
+    </script>
+}

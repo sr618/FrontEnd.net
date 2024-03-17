@@ -149,8 +149,7 @@
         </div>
     </div>
 </section>
-
-@section script{
+@section script {
     <script>
         document.getElementById("addToCartBtn").addEventListener("click", function (event) {
             event.preventDefault(); // Prevent default form submission
@@ -169,8 +168,8 @@
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
-                        // Cart updated successfully, you may want to show a success message or update UI
-                        
+                        // Cart updated successfully, update the partial view
+                        updatePartialView();
                         alert("Product added to cart successfully!");
                     } else {
                         // Handle errors here
@@ -183,8 +182,30 @@
             xhr.send(JSON.stringify({ idx: productId }));
         }
 
+        function updatePartialView() {
+            // Make an AJAX request to get the updated partial view
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/Cart/_Cart", true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // Replace the existing partial view with the updated one
+                        document.getElementById("cartPartialView").innerHTML = xhr.responseText;
+                    } else {
+                        // Handle errors here
+                        console.error("Failed to fetch updated partial view");
+                    }
+                }
+            };
+
+            // Send the request
+            xhr.send();
+        }
+
     </script>
 }
+
 
 @* @section script {
     <script>

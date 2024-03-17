@@ -115,25 +115,10 @@ window.onload = function () {
 
                             </div>
                         </div>
-                        <div class="header-cart">
-                            //render partial view
-@Html.Partial("_Cart")
 
-                            <div class="cart-submenu">
-                       
-                                <div class="cart-wrapper-section">
-                                    <div class="wrapper-line"></div>
-                                    <div class="wrapper-subtotal">
-                                        <h5 class="wrapper-title">Subtotal</h5>
-                                        <h5 class="wrapper-title">$@total</h5>
-                                    </div>
-                                    <div class="cart-btn">
-                                        <a href="cart.html" class="shop-btn view-btn">View Cart</a>
-                                        <a href="checkout.html" class="shop-btn checkout-btn">Checkout Now</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                      @Html.Partial("_Cart");
+
+                      
                         <div class="header-user">
                             <a href="@Url.Action("Index","Login")>
                                 <span>
@@ -824,17 +809,11 @@ window.onload = function () {
         </div>
     </header>
     <!--------------- header-section-end --------------->
-
-    <section id="hero" class="hero">
-        <main role="main" class="pb-3">
+  
             @RenderBody()
+            @RenderSection("script", required: false)
             @RenderSectionAsync("Scripts", required: false)
-            @RenderSection("scripts", required: false)
-                        @RenderSection("script", required: false)
 
-            @RenderSection("Section", required: false)
-        </main>
-  </section>
 
 
 
@@ -1055,3 +1034,23 @@ window.onload = function () {
     <!--------------- footer-section-end--------------->
 </body>
 </html>
+<script>
+    // Function to load cart content when cart is hovered over
+    document.addEventListener("DOMContentLoaded", function () {
+        const cartPlaceholder = document.getElementById('cart-placeholder');
+        const headerCartItems = document.querySelector('.header-cart-items');
+
+        headerCartItems.addEventListener('mouseenter', function () {
+            // Fetch cart content using AJAX
+            fetch('/Cart/GetCartContent')
+                .then(response => response.text())
+                .then(data => {
+                    // Replace the placeholder with the fetched cart content
+                    cartPlaceholder.innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error fetching cart content:', error);
+                });
+        });
+    });
+</script>

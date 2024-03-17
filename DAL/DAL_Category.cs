@@ -2,6 +2,10 @@
 using System.Data.Common;
 using System.Data;
 using Microsoft.Practices.EnterpriseLibrary.Data.Sql;
+using System;
+using System.Collections.Generic;
+
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace proj0.DAL
 {
@@ -13,27 +17,31 @@ namespace proj0.DAL
 
             //get all categories from the database 
             List<CategoryModel> categories = new List<CategoryModel>();
-            SqlDatabase sqlDB = new SqlDatabase(conStr);
-            DbCommand cmd = sqlDB.GetStoredProcCommand("spGetCategories");
-            using (IDataReader reader = sqlDB.ExecuteReader(cmd))
+            try
             {
-                while (reader.Read())
+                SqlDatabase sqlDB = new SqlDatabase(conStr);
+                DbCommand cmd = sqlDB.GetStoredProcCommand("spGetCategories");
+                using (IDataReader reader = sqlDB.ExecuteReader(cmd))
                 {
-                    CategoryModel category = new CategoryModel();
-                    category.CategoryID = Convert.ToInt32(reader["CategoryID"]);
-                    category.Name = reader["Name"].ToString();
-                    category.Description = reader["Description"].ToString();
-
-                    category.Image = reader["Image"].ToString();
-                    category.Modified = reader["Modified"].ToString();
-                    category.Created = reader["Created"].ToString();
-
-
-                    categories.Add(category);
+                    while (reader.Read())
+                    {
+                        CategoryModel category = new CategoryModel();
+                        category.CategoryID = Convert.ToInt32(reader["CategoryID"]);
+                        category.Name = reader["Name"].ToString();
+                        category.Description = reader["Description"].ToString();
+                        category.Image = reader["Image"].ToString();
+                        category.Modified = reader["Modified"].ToString();
+                        category.Created = reader["Created"].ToString();
+                        categories.Add(category);
+                    }
                 }
             }
-            
-            
+            catch (Exception ex)
+            {
+                // Handle the exception
+                throw ex;
+            }
+
             return categories;
         }
     }

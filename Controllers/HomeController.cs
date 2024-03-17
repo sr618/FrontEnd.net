@@ -39,7 +39,8 @@ namespace proj0.Controllers
                 CartItem cartItem = new CartItem
                 {
                     ItemID = item.ItemID,
-                    Name = item.Name,
+
+                    Name = item.Title,
                     Price = (decimal)item.FinalPrice,
                     Quantity = 1 // Assuming initial quantity is 1, you can adjust this based on your logic
                 };
@@ -52,7 +53,7 @@ namespace proj0.Controllers
             }
 
             // Return a partial view containing the updated cart data
-            return PartialView("_Cart", cart.Items);
+            return PartialView("_Cart");
         }
         [HttpPost]
         public IActionResult RemoveFromCart(int productId)
@@ -64,6 +65,23 @@ namespace proj0.Controllers
             // Return a partial view containing the updated cart data
             return PartialView("_Cart", cart.Items);
         }
+        public IActionResult Error404()
+        {
+            return View("Error404");
+        }
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public HomeController(IHttpContextAccessor httpContextAccessor)
+        {
+            _httpContextAccessor = httpContextAccessor;
+        }
+        public IActionResult GetCartContent()
+        {
+            // Fetch cart data and return partial view
+            var cart = _httpContextAccessor.HttpContext.Session.Get<Cart>("Cart") ?? new Cart();
+            return PartialView("_Cart", cart);
+        }
 
     }
+
 }

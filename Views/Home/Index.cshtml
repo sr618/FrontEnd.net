@@ -7,24 +7,26 @@
             <a href="product-sidebar.html" class="view">View All</a>
         </div>
         <div class="category-section">
-            @foreach (var row in Model.Categories){
-            <div class="product-wrapper" >
-                <div class="wrapper-img">
-                    <img src="@row.Image.ToString()">
-                </div>
-                <div class="wrapper-info">
-                    <a href="product-sidebar.html" class="wrapper-details">@row.Name</a>
-                </div>
-            </div>
+            @foreach (var row in Model.Categories)
+            {
+                <a href="@Url.Action("ProductsByCategory", "Product", new { categoryId = row.CategoryID })" class="product-wrapper">
+                    <div class="wrapper-img">
+                        <img src="@row.Image.ToString()">
+                    </div>
+                    <div class="wrapper-info">
+                        <span class="wrapper-details">@row.Name</span>
+                    </div>
+                </a>
             }
         </div>
+
     </div>
 </section>
 <section class="product arrival">
     <div class="container">
         <div class="section-title">
             <h5>NEW ARRIVALS</h5>
-            <a href="product-sidebar.html" class="view">View All</a>
+            <a href="@Url.Action("Allitems","Product")"class="view">View All</a>
         </div>
 
         <div class="arrival-section">

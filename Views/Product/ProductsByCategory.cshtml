@@ -1,0 +1,39 @@
+﻿<section class="product product-sidebar footer-padding">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-15">
+                <div class="product-sidebar-section">
+                    <div class="row g-5">
+                        @foreach (var item in Model)
+                        {
+                            <div class="col-lg-4 col-sm-6">
+                                <div class="product-wrapper">
+                                    <a href="@Url.Action("Index","Product",new {id = item.ItemID})">
+                                        <div class="product-img">
+                                            <img src="@item.Photos" alt="product-img">
+                                        </div>
+                                        <div class="product-info">
+                                            <div class="product-description">
+                                                <a href="product-info.html" class="product-details">@item.Title</a>
+                                                <div class="price">
+                                                    @if (item.FinalPrice != null)
+                                                    {
+                                                        <span class="price-cut">@item.ReservePrice</span>
+                                                        <span class="new-price">@item.FinalPrice</span>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div class="product-cart-btn">
+                                        <a href="cart.html" class="product-btn">Add To Cart</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

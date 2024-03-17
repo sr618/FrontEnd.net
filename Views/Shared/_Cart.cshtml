@@ -1,55 +1,96 @@
 ﻿@using Microsoft.AspNetCore.Http
 @using proj0.BAL
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
 @{
     var cart = HttpContextAccessor.HttpContext.Session.Get<Cart>("Cart") ?? new Cart();
-  
+    var total = cart.Items?.Sum(item => item.Price * item.Quantity) ?? 0;
 }
 
-<div class="cart-wrapper-item">
-    @if (cart.Items != null && cart.Items.Any())
-    {
-        foreach (var item in cart.Items)
-        {
-            <div class="wrapper">
-                <div class="wrapper-item">
-                    <div class="wrapper-img">
-                        <img src="@item.Image" alt="@item.Name">
-                    </div>
-                    <div class="wrapper-content">
-                        <h5 class="wrapper-title">@item.Name</h5>
-                        <p>@item.Description</p>
-                        <div class="price">
-                            <p class="new-price">$@item.Price.ToString("0.00")</p>
-                            <p>Quantity: @item.Quantity</p>
+@if (cart.Items != null && cart.Items.Any())
+{
+    <div class="header-cart">
+        <a href="cart.html" class="cart-item">
+            <span>
+                <svg width="35" height="28" viewBox="0 0 35 28" fill="none"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <!-- Your SVG content for the cart icon -->
+                </svg>
+            </span>
+            <span class="cart-text">
+                Cart
+            </span>
+        </a>
+        <div class="cart-submenu">
+            <div class="cart-wrapper-item">
+                @foreach (var item in cart.Items)
+                {
+                    <div class="wrapper">
+                        <div class="wrapper-item">
+                            <div class="wrapper-img">
+                                <img src="@item.Image" alt="@item.Name">
+                            </div>
+                            <div class="wrapper-content">
+                                <h5 class="wrapper-title">@item.Name</h5>
+                                <div class="price">
+                                    <p class="new-price">$@item.Price.ToString("0.00")</p>
+                                </div>
+                            </div>
                         </div>
+                        <span class="close-btn">
+                            <svg viewBox="0 0 10 10" fill="none" class="fill-current"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <!-- Your SVG content for the remove button -->
+                            </svg>
+                        </span>
                     </div>
-                </div>
-                <span class="close-btn">
-                    <!-- Remove button -->
-                    <button class="remove-from-cart" data-id="@item.ItemID">Remove</button>
-                </span>
+                }
             </div>
-        }
-    }
-    else
-    {
-        <div class="empty-cart-message">
-            <p>Cart is empty</p>
-        </div>
-    }
-</div>
-
-<div class="cart-submenu">
-    <div class="cart-wrapper-section">
-        <div class="wrapper-line"></div>
-        <div class="wrapper-subtotal">
-            <h5 class="wrapper-title">Subtotal</h5>
-            <h5 class="wrapper-title">total</h5>
-        </div>
-        <div class="cart-btn">
-            <a href="cart.html" class="shop-btn view-btn">View Cart</a>
-            <a href="checkout.html" class="shop-btn checkout-btn">Checkout Now</a>
+            <div class="cart-wrapper-section">
+                <div class="wrapper-line"></div>
+                <div class="wrapper-subtotal">
+                    <h5 class="wrapper-title">Subtotal</h5>
+                    <h5 class="wrapper-title">$@total</h5>
+                </div>
+                <div class="cart-btn">
+                    <a href="cart.html" class="shop-btn view-btn">View Cart</a>
+                    <a href="checkout.html" class="shop-btn checkout-btn">Checkout Now</a>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+}
+else
+{
+    <div class="header-cart">
+        <a href="cart.html" class="cart-item">
+            <span>
+                <svg width="35" height="28" viewBox="0 0 35 28" fill="none"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <!-- Your SVG content for the cart icon -->
+                </svg>
+            </span>
+            <span class="cart-text">
+                Cart
+            </span>
+        </a>
+        <div class="cart-submenu">
+            <div class="cart-wrapper-item">
+                <div class="empty-cart-message">
+                    <p>Cart is empty</p>
+                </div>
+            </div>
+            <div class="cart-wrapper-section">
+                <div class="wrapper-line"></div>
+                <div class="wrapper-subtotal">
+                    <h5 class="wrapper-title">Subtotal</h5>
+                    <h5 class="wrapper-title">$0.00</h5>
+                </div>
+                <div class="cart-btn">
+                    <a href="@Url.Action("Index","Cart")" class="shop-btn view-btn">View Cart</a>
+                    <a href="@Url.Action("Index","Checkout")" class="shop-btn checkout-btn">Checkout Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

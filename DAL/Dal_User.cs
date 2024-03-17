@@ -31,8 +31,8 @@ namespace proj0.DAL
                     user.IsActive = Convert.ToBoolean(reader["IsActive"]);
                     user.IsAdmin = Convert.ToBoolean(reader["IsAdmin"]);
                     user.address = reader["address"].ToString();
-                    user.Pincode = Convert.ToInt32(reader["Pincode"]);
-                    users.Add(user);
+                    user.Pincode = reader["Pincode"].ToString();
+                       users.Add(user);
                 }
             }
             return users;
@@ -53,6 +53,37 @@ namespace proj0.DAL
 
          int res =   sqlDB.ExecuteNonQuery(cmd);
             return res;
+        }
+
+        public UserModel GetUserByCredentials(string userName, string password)
+        {
+            userName = userName.Replace("'", "''");
+            password = password.Replace("'", "''");
+            SqlDatabase sqlDB = new SqlDatabase(conStr);
+            DbCommand cmd = sqlDB.GetStoredProcCommand("spGetUserByCredentials");
+            sqlDB.AddInParameter(cmd, "@UserName", DbType.String, userName);
+            sqlDB.AddInParameter(cmd, "@Password", DbType.String, password);
+            using (IDataReader reader = sqlDB.ExecuteReader(cmd))
+            {
+                if (reader.Read())
+                {
+                    UserModel user = new UserModel();
+                    user.UserID = Convert.ToInt32(reader["UserID"]);
+                    user.UserName = reader["UserName"].ToString();
+                    user.Password = reader["Password"].ToString();
+                    user.Image = reader["Image"].ToString();
+                    user.Modified = reader["Modified"].ToString();
+                    user.Created = reader["Created"].ToString();
+                    user.IsActive = Convert.ToBoolean(reader["IsActive"]);
+                    user.IsAdmin = Convert.ToBoolean(reader["IsAdmin"]);
+                    user.address = reader["address"].ToString();
+                    user.Pincode = reader["Pincode"].ToString();
+                    return user;
+                }
+            }
+            return null;
+
+           
         }
     }
 }

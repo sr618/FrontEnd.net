@@ -13,7 +13,7 @@
         public bool IsActive { get; set; } = true;
         public bool IsAdmin { get; set; } = false;
         public string address { get; set; }
-         public int Pincode { get; set; }
+         public String Pincode { get; set; }
     }
     public class LoginModel
     {
